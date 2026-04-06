@@ -66,3 +66,23 @@ SYSTEM_PROMPT = textwrap.dedent("""
 
     One word or number only. Nothing else.
 """).strip()
+
+def build_user_prompt(
+    sequence: str,
+    feedback: str,
+    attempts_left: int,
+    difficulty: str,
+    history: List[str]
+) -> str:
+    history_block = "\n".join(history[-3:]) if history else "None"
+    return textwrap.dedent(f"""
+        Sequence: {sequence}
+        Difficulty: {difficulty}
+        Attempts left: {attempts_left}
+        Last feedback: {feedback}
+
+        Your previous guesses this episode:
+        {history_block}
+
+        What is the next value? Reply with the value only.
+    """).strip()
