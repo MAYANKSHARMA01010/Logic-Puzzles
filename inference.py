@@ -86,3 +86,32 @@ def build_user_prompt(
 
         What is the next value? Reply with the value only.
     """).strip()
+
+def get_model_guess(
+    client: OpenAI,
+    sequence: str,
+    feedback: str,
+    attempts_left: int,
+    difficulty: str,
+    history: List[str]
+) -> str:
+    user_prompt = build_user_prompt(
+        sequence, feedback, attempts_left, difficulty, history
+    )
+    try:
+        completion = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user",   "content": user_prompt},
+            ],
+            temperature=TEMPERATURE,
+            max_tokens=MAX_TOKENS,
+            stream=False,
+        )
+        text = (completion.choices[0].message.content or "").strip()
+        return text if text else "0"   # fallback if model returns empty
+    except Exception as exc:
+        # Log to stderr so it doesn't pollute stdout log format
+        print(f"[DEBUG] LLM call failed: {exc}", flush=True, file=__import__('sys').stderr)
+        return "0"
