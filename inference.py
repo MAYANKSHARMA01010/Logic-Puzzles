@@ -7,7 +7,7 @@ from openai import OpenAI
 API_KEY       = os.getenv("HF_TOKEN")
 API_BASE_URL  = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME    = os.getenv("MODEL_NAME",   "Qwen/Qwen2.5-72B-Instruct")
-IMAGE_NAME    = os.getenv("IMAGE_NAME")   # your Docker image name
+IMAGE_NAME    = os.getenv("IMAGE_NAME")   # Docker image to run for the env
 
 TASK_NAME     = os.getenv("PATTERN_TASK",      "sequence_guess")
 BENCHMARK     = os.getenv("PATTERN_BENCHMARK", "my_pattern_env")
@@ -17,26 +17,26 @@ MAX_TOKENS    = int(float(os.getenv("MAX_TOKENS",  "50")))
 
 
 # -----------------------------------------------
-# Scoring constants
+# Scoring config
 # -----------------------------------------------
-# Max possible reward: hard task (3.0) + full efficiency on attempt 1 of 2 (0.5) = 3.5
+# Max score in one episode:
+# hard task reward (3.0) + first-try bonus (0.5) = 3.5
 MAX_TOTAL_REWARD        = float(os.getenv("MAX_TOTAL_REWARD",        "3.5"))
 SUCCESS_SCORE_THRESHOLD = float(os.getenv("SUCCESS_SCORE_THRESHOLD", "0.1"))
 
 
 # -----------------------------------------------
-# LOGGING HELPERS — the only things that print to stdout
+# Logging helpers (stdout goes through these only)
 # -----------------------------------------------
-
 def log_start(task: str, env: str, model: str) -> None:
-    # Exactly one space between fields, no extra characters
+    # Keep format stable so logs are easy to parse.
     print(f"[START] task={task} env={env} model={model}", flush=True)
 
 
 def log_step(step: int, action: str, reward: float,
              done: bool, error: Optional[str]) -> None:
     error_val = error if error else "null"
-    done_val  = str(done).lower()          # Python True → "true"
+    done_val  = str(done).lower()          # Match JSON-style true/false.
     print(
         f"[STEP] step={step} action={action} "
         f"reward={reward:.2f} done={done_val} error={error_val}",
