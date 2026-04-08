@@ -68,11 +68,11 @@ if ! command -v docker &>/dev/null; then
   exit 1
 fi
 
-if docker build -t pattern-puzzle-env:test -f "$REPO_DIR/server/Dockerfile" "$REPO_DIR" > /dev/null 2>&1; then
+if docker build -t pattern-puzzle-env:test "$REPO_DIR" > /dev/null 2>&1; then
   pass "Docker build succeeded"
 else
   fail "Docker build failed"
-  hint "Run: docker build -f server/Dockerfile . to see errors"
+  hint "Run: docker build . to see errors"
   exit 1
 fi
 
