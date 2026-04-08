@@ -61,3 +61,17 @@ source scripts/setup_env.sh
 .venv/bin/python -m uvicorn server.app:app --host 0.0.0.0 --port 7860 --reload
 .venv/bin/python inference.py
 ```
+
+## Hugging Face Deploy Quick Check
+
+1. Push `main` to both remotes: `origin` (GitHub) and `hf` (Hugging Face).
+2. In Space Settings, add Secrets:
+	- `HF_TOKEN`
+	- `API_BASE_URL`
+	- `MODEL_NAME`
+	- `IMAGE_NAME` (if required by your run flow)
+3. Open the live Space URL and verify:
+	- `/health`
+	- `/docs`
+	- `POST /reset`
+	- `POST /step`

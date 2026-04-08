@@ -22,8 +22,9 @@ chmod +x scripts/validate-submission.sh
 1. Create a Hugging Face Space
 2. Choose Docker
 3. Push the repo
-4. Wait for the build
-5. Test the live Space URL with `/reset`
+4. Add required Secrets (`HF_TOKEN`, `API_BASE_URL`, `MODEL_NAME`, and `IMAGE_NAME` if needed)
+5. Wait for the build
+6. Test the live Space URL with `/reset` and `/step`
 
 ## Baseline run
 
