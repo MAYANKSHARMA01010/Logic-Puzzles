@@ -1,0 +1,55 @@
+name: pattern-puzzle-env
+version: "1.0.0"
+description: "Pattern sequence puzzle game where AI agents solve mathematical and alphabetical sequences with difficulty-based scoring"
+
+# Endpoints that judges will call
+endpoints:
+  reset: "/reset"
+  step: "/step"
+  state: "/state"
+
+# Action space
+action_type: "object"
+action_schema:
+  type: "object"
+  properties:
+    guess:
+      type: "string"
+      description: "The next value in the sequence as a string (e.g., '10', 'I', '6.25')"
+  required:
+    - guess
+
+# Observation space
+observation_type: "object"
+observation_schema:
+  type: "object"
+  properties:
+    sequence:
+      type: "string"
+      description: "The pattern string ending with ? (e.g., '2, 4, 6, 8, ?')"
+    feedback:
+      type: "string"
+      description: "Pass/fail message from the environment"
+    attempts_left:
+      type: "integer"
+      description: "Number of remaining attempts before episode ends"
+    task_difficulty:
+      type: "string"
+      description: "Difficulty level: easy, medium, or hard"
+
+# Reward bounds
+reward:
+  min: 0.0
+  max: 1.0
+  
+# Required environment variables
+required_env_vars:
+  - HF_TOKEN
+  - API_BASE_URL
+  - MODEL_NAME
+
+# Docker image
+docker:
+  base_image: "python:3.11-slim"
+  build_command: "docker build -t pattern-puzzle-env:latest -f server/Dockerfile ."
+  run_command: "docker run --rm -p 7860:7860 pattern-puzzle-env:latest"
