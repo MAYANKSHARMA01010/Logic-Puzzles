@@ -22,16 +22,16 @@ chmod +x scripts/validate-submission.sh
 
 ## API smoke tests (after deploy)
 
-Replace `<SPACE_URL>` with your live URL, for example `https://manku69-logic-puzzles.hf.space`.
+Replace `[<SPACE_URL>](https://huggingface.co/spaces/Manku69/logic-puzzles)` with your live URL, for example `https://manku69-logic-puzzles.hf.space`.
 
 ```bash
 curl <SPACE_URL>/health
 
-curl -X POST <SPACE_URL>/reset \
+curl -X POST [<SPACE_URL>](https://huggingface.co/spaces/Manku69/logic-puzzles)/reset \
 	-H "Content-Type: application/json" \
 	-d '{"difficulty":"easy"}'
 
-curl -X POST <SPACE_URL>/step \
+curl -X POST [<SPACE_URL>](https://huggingface.co/spaces/Manku69/logic-puzzles)/step \
 	-H "Content-Type: application/json" \
 	-d '{"guess":"8"}'
 ```
