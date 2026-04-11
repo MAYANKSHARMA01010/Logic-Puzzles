@@ -972,7 +972,7 @@ class ForecastAuditEnvironment:
         components["penalty"] = -penalty
 
         raw_score = sum(value for key, value in components.items() if key != "penalty") - penalty
-        final_score = max(0.0, min(1.0, round(raw_score, 4)))
+        final_score = max(0.01, min(0.99, round(raw_score, 4)))
 
         message = self._build_feedback_message(task, action, final_score)
         return RewardModel(score=final_score, components=components, message=message)
