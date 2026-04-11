@@ -48,7 +48,7 @@ This document explains the internal structure and design of Forecast Audit OpenE
 ### Core Files
 
 ```
-forecast-audit-env/
+Forecast-Audit/
 ├── server/
 │   ├── app.py                    # FastAPI application & routes
 │   └── environment.py            # Task manager & grading logic

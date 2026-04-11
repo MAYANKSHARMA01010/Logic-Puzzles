@@ -310,7 +310,7 @@ The system measures agent performance via:
 | Installation | [Installation](./installation.md) |
 | API Reference | [API Reference](./api-reference.md) |
 | Architecture | [Architecture](./architecture.md) |
-| Building Agents | [Building an Agent](./tutorials/03-building-an-agent.md) |
+| Troubleshooting | [Troubleshooting](./troubleshooting.md) |
 
 ---
 

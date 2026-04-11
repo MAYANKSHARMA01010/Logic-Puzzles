@@ -14,7 +14,7 @@ Complete guide for running with Docker.
 ## Quick Start
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 docker build -t forecast-audit-openenv .
 docker run --rm -p 7860:7860 forecast-audit-openenv
 ```
@@ -46,7 +46,7 @@ docker run hello-world
 ### 2. Navigate Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 ls Dockerfile  # Verify Dockerfile exists
 ```
 
@@ -378,9 +378,9 @@ Time: ~2 seconds
 
 ## 📝 Next Steps
 
-- [Deploy to AWS](./advanced/deployment.md)
-- [Scale with Kubernetes](./advanced/kubernetes.md)
-- [CI/CD Pipeline](./advanced/cicd.md)
+- [Round 1 Submission Guide](./round1/submission-guide.md)
+- [Round 1 Checklist](./round1/checklist.md)
+- [Troubleshooting](./troubleshooting.md)
 
 ---
 

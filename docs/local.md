@@ -27,7 +27,7 @@ Should show 3.11 or higher.
 ### 2. Navigate Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 cat requirements.txt  # Verify files exist
 ```
 
@@ -152,7 +152,7 @@ python -c "from server.app import app; app"
 ## 📊 Project Structure
 
 ```
-forecast-audit-env/
+Forecast-Audit/
 ├── server/                 # Core server code
 │   ├── app.py             # FastAPI application
 │   └── environment.py      # Main logic
@@ -315,8 +315,8 @@ git push origin v1.0
 
 ## 📝 Next Steps
 
-- [API Testing](./tutorials/02-api-testing.md)
-- [Building an Agent](./tutorials/03-building-an-agent.md)
+- [API Reference](./api-reference.md)
+- [Task Format](./task-format.md)
 - [Architecture Deep Dive](./architecture.md)
 
 ---

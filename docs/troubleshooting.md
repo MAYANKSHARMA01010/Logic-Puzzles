@@ -120,8 +120,8 @@ ModuleNotFoundError: No module named 'models'
 
 ```bash
 # Make sure you're in project root
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
-pwd  # Should show forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+pwd  # Should show Forecast-Audit
 
 # Try running from project root
 python -m server.app
@@ -175,7 +175,7 @@ docker build failed: "No such file or directory"
 
 ```bash
 # Navigate to project root
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 
 # Check Dockerfile exists
 ls -la Dockerfile

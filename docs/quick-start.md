@@ -6,7 +6,8 @@ Get the Forecast Audit OpenEnv running in less than 5 minutes!
 
 ### 1. Clone/Navigate to Project
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+git clone https://github.com/MAYANKSHARMA01010/Forecast-Audit
+cd Forecast-Audit
 ```
 
 ### 2. Create Python Environment
@@ -61,7 +62,7 @@ http://localhost:7860/docs
 
 ### Build & Run
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 docker build -t forecast-audit-openenv .
 docker run --rm -p 7860:7860 forecast-audit-openenv
 ```
@@ -138,7 +139,7 @@ Choose your path:
 → Read [Docker Setup](./docker.md)
 
 ### 🤖 I Want to Build an Agent
-→ Read [Building an Agent](./tutorials/03-building-an-agent.md)
+→ Read [Task Format](./task-format.md)
 
 ---
 

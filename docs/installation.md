@@ -20,7 +20,7 @@ Complete step-by-step installation instructions for all scenarios.
 
 ### Commands
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -51,7 +51,7 @@ python3 --version
 ### Step 2: Navigate to Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 pwd  # Shows current directory
 ls -la  # Lists files
 ```
@@ -155,7 +155,7 @@ http://localhost:7860/docs
 ### Step 1: Navigate to Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/forecast-audit-env
+cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
 ```
 
 ### Step 2: Build Image
@@ -219,10 +219,10 @@ docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:
 
 ```json
 {
-  "family": "forecast-audit-env",
+  "family": "forecast-audit",
   "containerDefinitions": [
     {
-      "name": "forecast-audit-env",
+      "name": "forecast-audit",
       "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:latest",
       "portMappings": [
         {
@@ -242,7 +242,7 @@ docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:
 aws ecs create-service \
   --cluster my-cluster \
   --service-name forecast-audit \
-  --task-definition forecast-audit-env:1 \
+  --task-definition forecast-audit:1 \
   --desired-count 1
 ```
 
@@ -269,7 +269,7 @@ gcloud run deploy forecast-audit-openenv \
 ```bash
 az container create \
   --resource-group myResourceGroup \
-  --name forecast-audit-env \
+  --name forecast-audit \
   --image forecast-audit-openenv:latest \
   --ports 7860 \
   --ip-address Public

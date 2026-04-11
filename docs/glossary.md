@@ -353,4 +353,4 @@ Allowed accuracy range when comparing numbers.
 
 **Glossary Complete** ✅
 
-Don't see a term? [Open an issue](https://github.com/forecast-audit/openenv/issues)!
+Don't see a term? [Open an issue](https://github.com/MAYANKSHARMA01010/Forecast-Audit/issues)!

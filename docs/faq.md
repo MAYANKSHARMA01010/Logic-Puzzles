@@ -161,7 +161,7 @@ docker logs -f <container_id>
 ## Customization
 
 ### Q: Can I add my own tasks?
-**A:** Yes! Edit `server/environment.py` and add a TaskSpec. See [Custom Tasks](./advanced/custom-tasks.md).
+**A:** Yes! Edit `server/environment.py` and add a TaskSpec. See [Task Format](./task-format.md).
 
 ### Q: Can I change the reward function?
 **A:** Yes! Modify the `grade_action()` method in `server/environment.py`.
@@ -225,16 +225,16 @@ docker logs -f <container_id>
 **A:** 
 1. Read [Overview](./overview.md)
 2. Follow [Quick Start](./quick-start.md)
-3. Try [Basic Tutorial](./tutorials/01-basic-tutorial.md)
+3. Run [Round 1 Quick Submit](./round1/quick-submit.md)
 
 ### Q: How do I build an AI agent?
-**A:** See [Building an Agent](./tutorials/03-building-an-agent.md)
+**A:** Start with [API Reference](./api-reference.md), then use [Task Format](./task-format.md).
 
 ### Q: Where's the code for tasks?
 **A:** In `server/environment.py` - search for `TASKS` list.
 
 ### Q: How do rewards work mathematically?
-**A:** See [Reward System](./advanced/reward-system.md)
+**A:** See reward details and score components in [API Reference](./api-reference.md).
 
 ---
 

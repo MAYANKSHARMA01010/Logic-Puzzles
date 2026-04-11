@@ -13,8 +13,8 @@ We welcome contributions from everyone! Whether you're fixing bugs, adding featu
 ### 1. Fork the Repository
 
 ```bash
-git clone <your-fork>
-cd forecast-audit-env
+git clone https://github.com/MAYANKSHARMA01010/Forecast-Audit
+cd Forecast-Audit
 ```
 
 ### 2. Create a Branch
