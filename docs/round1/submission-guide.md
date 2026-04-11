@@ -26,6 +26,36 @@ chmod +x scripts/validate-submission.sh
 5. Wait for the build
 6. Test the live Space URL with `/reset` and `/step`
 
+### Current Space
+
+- Space page: https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv
+- Live URL: https://manku69-forecast-audit-openenv.hf.space
+
+### Live API smoke tests
+
+```bash
+SPACE_URL="https://manku69-forecast-audit-openenv.hf.space"
+
+curl "$SPACE_URL/health"
+
+curl -X POST "$SPACE_URL/reset" \
+	-H "Content-Type: application/json" \
+	-d '{"difficulty":"easy"}'
+
+curl -X POST "$SPACE_URL/step" \
+	-H "Content-Type: application/json" \
+	-d '{
+		"operation": "impute",
+		"target_index": 3,
+		"predicted_value": 135.0,
+		"severity": "low",
+		"violated_constraints": [],
+		"rationale": "Stable +5 ramp"
+	}'
+
+curl "$SPACE_URL/state"
+```
+
 ## Baseline run
 
 ```bash

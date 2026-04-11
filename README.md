@@ -51,6 +51,36 @@ Use [docs/local.md](docs/local.md) for full local run steps.
 
 Use [docs/docker.md](docs/docker.md) for Docker build and run steps.
 
+## Hugging Face Space
+
+- Space page: https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv
+- Live app URL: https://manku69-forecast-audit-openenv.hf.space
+
+Quick live tests:
+
+```bash
+SPACE_URL="https://manku69-forecast-audit-openenv.hf.space"
+
+curl "$SPACE_URL/health"
+
+curl -X POST "$SPACE_URL/reset" \
+	-H "Content-Type: application/json" \
+	-d '{"difficulty":"easy"}'
+
+curl -X POST "$SPACE_URL/step" \
+	-H "Content-Type: application/json" \
+	-d '{
+		"operation": "impute",
+		"target_index": 3,
+		"predicted_value": 135.0,
+		"severity": "low",
+		"violated_constraints": [],
+		"rationale": "Stable +5 ramp"
+	}'
+
+curl "$SPACE_URL/state"
+```
+
 ## API Endpoints
 
 - `POST /reset` -> starts a task episode
