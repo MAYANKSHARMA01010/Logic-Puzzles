@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPO_ID="${1:-${OPENENV_REPO_ID:-}}"
+REPO_ID="${1:-${OPENENV_REPO_ID:-Manku69/Forecast-Audit-OpenEnv}}"
 
 if [[ -z "$REPO_ID" ]]; then
   echo "Usage: bash scripts/deploy_openenv.sh <username/repo-name>"

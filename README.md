@@ -9,6 +9,8 @@ pinned: false
 
 # Forecast-Audit
 
+Repository: [https://github.com/MAYANKSHARMA01010/Forecast-Audit](https://github.com/MAYANKSHARMA01010/Forecast-Audit)
+
 Forecast-Audit is an OpenEnv-compatible benchmark environment for forecast and time-series quality auditing.
 
 The agent acts like a data/forecast analyst and must:
@@ -130,13 +132,13 @@ Use [docs/round1/submission-guide.md](docs/round1/submission-guide.md) for Round
 source .venv/bin/activate
 source scripts/setup_env.sh
 openenv validate
-openenv push --repo-id your-username/forecast-audit-openenv
+openenv push --repo-id Manku69/Forecast-Audit-OpenEnv
 ```
 
 Or use the helper script:
 
 ```bash
-bash scripts/deploy_openenv.sh your-username/forecast-audit-openenv
+bash scripts/deploy_openenv.sh Manku69/Forecast-Audit-OpenEnv
 ```
 
 ## Project Structure

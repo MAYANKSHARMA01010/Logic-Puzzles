@@ -26,10 +26,12 @@ python inference.py
 
 ## Deploy steps
 
+Source repository: [https://github.com/MAYANKSHARMA01010/Forecast-Audit](https://github.com/MAYANKSHARMA01010/Forecast-Audit)
+
 1. Create a Hugging Face Space
 2. Choose Docker
 3. Validate locally: `openenv validate`
-4. Deploy with OpenEnv CLI: `openenv push --repo-id <username>/<space-name>`
+4. Deploy with OpenEnv CLI: `openenv push --repo-id Manku69/Forecast-Audit-OpenEnv`
 5. Add required Secrets (`HF_TOKEN`, `API_BASE_URL`, `MODEL_NAME`, and `IMAGE_NAME` if needed)
 6. Wait for the build
 7. Test the live Space URL with `/reset` and `/step`
@@ -44,16 +46,16 @@ source scripts/setup_env.sh
 openenv validate
 
 # Deploy to HF Space
-openenv push --repo-id your-username/forecast-audit-openenv
+openenv push --repo-id Manku69/Forecast-Audit-OpenEnv
 
 # Optional: private space
-openenv push --repo-id your-username/forecast-audit-openenv --private
+openenv push --repo-id Manku69/Forecast-Audit-OpenEnv --private
 ```
 
 If you prefer a reusable wrapper:
 
 ```bash
-bash scripts/deploy_openenv.sh your-username/forecast-audit-openenv
+bash scripts/deploy_openenv.sh Manku69/Forecast-Audit-OpenEnv
 ```
 
 ### Current Space
