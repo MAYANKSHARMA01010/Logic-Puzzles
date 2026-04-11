@@ -41,6 +41,7 @@ See the dedicated setup pages:
 
 - [docs/installation.md](docs/installation.md)
 - [docs/quick-start.md](docs/quick-start.md)
+- [docs/environment-variables.md](docs/environment-variables.md)
 
 ## Run Locally
 
@@ -81,10 +82,10 @@ Forecast-Audit/
 
 All detailed documentation is in separate Markdown files linked below.
 
-- [docs/index.md](docs/index.md)
 - [docs/overview.md](docs/overview.md)
 - [docs/quick-start.md](docs/quick-start.md)
 - [docs/installation.md](docs/installation.md)
+- [docs/environment-variables.md](docs/environment-variables.md)
 - [docs/local.md](docs/local.md)
 - [docs/docker.md](docs/docker.md)
 - [docs/api-reference.md](docs/api-reference.md)
