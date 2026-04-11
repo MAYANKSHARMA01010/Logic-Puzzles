@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import sys
 from typing import Any, Dict, List
 
 from openai import OpenAI
@@ -83,7 +85,31 @@ def llm_policy(client: OpenAI, task_id: str) -> Dict[str, Any]:
         ],
     )
     content = response.choices[0].message.content or "{}"
-    return json.loads(content)
+    return _parse_action_json(content)
+
+
+def _parse_action_json(content: str) -> Dict[str, Any]:
+    content = content.strip()
+
+    # Fast path: pure JSON output.
+    try:
+        parsed = json.loads(content)
+        if isinstance(parsed, dict):
+            return parsed
+    except json.JSONDecodeError:
+        pass
+
+    # Fallback: extract first JSON object (handles markdown/code fences/preamble).
+    match = re.search(r"\{[\s\S]*\}", content)
+    if match:
+        try:
+            parsed = json.loads(match.group(0))
+            if isinstance(parsed, dict):
+                return parsed
+        except json.JSONDecodeError:
+            pass
+
+    raise ValueError("Model output did not contain a valid JSON object")
 
 
 def evaluate_action(task_id: str, action: Dict[str, Any]) -> Dict[str, Any]:
@@ -110,8 +136,28 @@ def main() -> None:
     results: List[Dict[str, Any]] = []
     for task_id in TASK_ORDER:
         print(f"[START] task={task_id}", flush=True)
-        action = llm_policy(client, task_id) if client else heuristic_policy(task_id)
-        result = evaluate_action(task_id, action)
+        if client:
+            try:
+                action = llm_policy(client, task_id)
+            except Exception as exc:
+                print(
+                    f"LLM policy failed for {task_id}; using heuristic fallback: {exc}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                action = heuristic_policy(task_id)
+        else:
+            action = heuristic_policy(task_id)
+
+        try:
+            result = evaluate_action(task_id, action)
+        except Exception as exc:
+            print(
+                f"Action evaluation failed for {task_id}; retrying with heuristic: {exc}",
+                file=sys.stderr,
+                flush=True,
+            )
+            result = evaluate_action(task_id, heuristic_policy(task_id))
         step_count = result["info"].get("step_count", 1)
         print(
             f"[STEP] task={task_id} step={step_count} reward={result['score']:.4f}",
