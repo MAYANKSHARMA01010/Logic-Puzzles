@@ -379,7 +379,7 @@ Time: ~2 seconds
 ## 📝 Next Steps
 
 - [Round 1 Submission Guide](./round1/submission-guide.md)
-- [Round 1 Checklist](./round1/checklist.md)
+- [Round 1 Submission Guide](./round1/submission-guide.md)
 - [Troubleshooting](./troubleshooting.md)
 
 ---

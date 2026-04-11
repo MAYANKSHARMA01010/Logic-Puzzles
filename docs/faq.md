@@ -225,7 +225,7 @@ docker logs -f <container_id>
 **A:** 
 1. Read [Overview](./overview.md)
 2. Follow [Quick Start](./quick-start.md)
-3. Run [Round 1 Quick Submit](./round1/quick-submit.md)
+3. Run [Round 1 Submission Guide](./round1/submission-guide.md)
 
 ### Q: How do I build an AI agent?
 **A:** Start with [API Reference](./api-reference.md), then use [Task Format](./task-format.md).

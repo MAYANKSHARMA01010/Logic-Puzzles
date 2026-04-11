@@ -39,17 +39,16 @@ The agent acts like a data/forecast analyst and must:
 
 See the dedicated setup pages:
 
-- [docs/clone.md](docs/clone.md)
-- [docs/local-run.md](docs/local-run.md)
-- [docs/docker-run.md](docs/docker-run.md)
+- [docs/installation.md](docs/installation.md)
+- [docs/quick-start.md](docs/quick-start.md)
 
 ## Run Locally
 
-Use [docs/local-run.md](docs/local-run.md) for full local run steps.
+Use [docs/local.md](docs/local.md) for full local run steps.
 
 ## Docker
 
-Use [docs/docker-run.md](docs/docker-run.md) for Docker build and run steps.
+Use [docs/docker.md](docs/docker.md) for Docker build and run steps.
 
 ## API Endpoints
 
@@ -60,7 +59,7 @@ Use [docs/docker-run.md](docs/docker-run.md) for Docker build and run steps.
 
 ## Round 1 Quick Checks
 
-Use [docs/round1-checks.md](docs/round1-checks.md) for Round 1 validation and submission checks.
+Use [docs/round1/submission-guide.md](docs/round1/submission-guide.md) for Round 1 validation and submission checks.
 
 ## Project Structure
 
@@ -83,10 +82,6 @@ Forecast-Audit/
 All detailed documentation is in separate Markdown files linked below.
 
 - [docs/index.md](docs/index.md)
-- [docs/clone.md](docs/clone.md)
-- [docs/local-run.md](docs/local-run.md)
-- [docs/docker-run.md](docs/docker-run.md)
-- [docs/round1-checks.md](docs/round1-checks.md)
 - [docs/overview.md](docs/overview.md)
 - [docs/quick-start.md](docs/quick-start.md)
 - [docs/installation.md](docs/installation.md)
@@ -99,6 +94,4 @@ All detailed documentation is in separate Markdown files linked below.
 - [docs/faq.md](docs/faq.md)
 - [docs/glossary.md](docs/glossary.md)
 - [docs/contributing.md](docs/contributing.md)
-- [docs/round1/checklist.md](docs/round1/checklist.md)
-- [docs/round1/quick-submit.md](docs/round1/quick-submit.md)
 - [docs/round1/submission-guide.md](docs/round1/submission-guide.md)

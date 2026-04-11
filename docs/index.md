@@ -17,15 +17,6 @@ This index includes only currently available documentation files.
 - [glossary.md](./glossary.md)
 - [contributing.md](./contributing.md)
 
-## Workflow-Specific
-
-- [clone.md](./clone.md)
-- [local-run.md](./local-run.md)
-- [docker-run.md](./docker-run.md)
-- [round1-checks.md](./round1-checks.md)
-
 ## Round 1
 
-- [round1/checklist.md](./round1/checklist.md)
-- [round1/quick-submit.md](./round1/quick-submit.md)
 - [round1/submission-guide.md](./round1/submission-guide.md)
