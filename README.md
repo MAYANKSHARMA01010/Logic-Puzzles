@@ -46,6 +46,7 @@ See the dedicated setup pages:
 ## Run Locally
 
 Use [docs/local.md](docs/local.md) for full local run steps.
+For URLs and ports in all run modes, use [docs/access-urls-and-ports.md](docs/access-urls-and-ports.md).
 
 Quick local verification:
 
@@ -60,6 +61,7 @@ Expected: validation passes, inference prints summary JSON, and task counts show
 ## Docker
 
 Use [docs/docker.md](docs/docker.md) for Docker build and run steps.
+For URL/port mapping details and custom host ports, use [docs/access-urls-and-ports.md](docs/access-urls-and-ports.md).
 
 Quick Docker verification:
 
@@ -79,8 +81,8 @@ curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d 
 
 ## Hugging Face Space
 
-- Space page: https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv
-- Live app URL: https://manku69-forecast-audit-openenv.hf.space
+- Space page: [https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv](https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv)
+- Live app URL: [https://manku69-forecast-audit-openenv.hf.space](https://manku69-forecast-audit-openenv.hf.space)
 
 Quick live tests:
 
@@ -90,24 +92,26 @@ SPACE_URL="https://manku69-forecast-audit-openenv.hf.space"
 curl "$SPACE_URL/health"
 
 curl -X POST "$SPACE_URL/reset" \
-	-H "Content-Type: application/json" \
-	-d '{"difficulty":"easy"}'
+  -H "Content-Type: application/json" \
+  -d '{"difficulty":"easy"}'
 
 curl -X POST "$SPACE_URL/step" \
-	-H "Content-Type: application/json" \
-	-d '{
-		"operation": "impute",
-		"target_index": 3,
-		"predicted_value": 135.0,
-		"severity": "low",
-		"violated_constraints": [],
-		"rationale": "Stable +5 ramp"
-	}'
+  -H "Content-Type: application/json" \
+  -d '{
+    "operation": "impute",
+    "target_index": 3,
+    "predicted_value": 135.0,
+    "severity": "low",
+    "violated_constraints": [],
+    "rationale": "Stable +5 ramp"
+  }'
 
 curl "$SPACE_URL/state"
 ```
 
 Expected: `/health` returns `{"status":"healthy"}`, and `/reset` and `/step` return valid JSON payloads.
+
+For a consolidated Local/Docker/HF access matrix, see [docs/access-urls-and-ports.md](docs/access-urls-and-ports.md).
 
 ## API Endpoints
 
@@ -154,3 +158,4 @@ All detailed documentation is in separate Markdown files linked below.
 - [Glossary of Terms](docs/glossary.md)
 - [Contributing Guide](docs/contributing.md)
 - [Round 1 Submission Guide](docs/round1/submission-guide.md)
+- [Access URLs and Ports](docs/access-urls-and-ports.md)

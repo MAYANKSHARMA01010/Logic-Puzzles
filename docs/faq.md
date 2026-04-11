@@ -43,11 +43,21 @@ If all checks pass, you're good!
 ## Running the Server
 
 ### Q: Port 7860 is in use. Can I change it?
-**A:** Yes! Edit `server/app.py`:
-```python
-def main(host: str = "0.0.0.0", port: int = 8000) -> None:  # Change 7860 to 8000
-    uvicorn.run(app, host=host, port=port)
+**A:** Yes.
+
+- For local development, run Uvicorn directly on another host port:
+
+```bash
+uvicorn server.app:app --host 0.0.0.0 --port 8000
 ```
+
+- For Docker, keep app port `7860` and remap host port:
+
+```bash
+docker run --rm -p 8000:7860 forecast-audit-openenv
+```
+
+See [Access URLs and Ports](./access-urls-and-ports.md).
 
 ### Q: How do I stop the server?
 **A:** Press `CTRL+C` in the terminal.
@@ -105,16 +115,17 @@ docker exec -it <container_id> /bin/bash
 **A:** Not in single server instance. Each task is independent. For concurrency, use multiple server instances.
 
 ### Q: What's the max steps per task?
-**A:** Set per-task (usually 5-10). Check with:
-```bash
-curl http://localhost:7860/metadata
-```
+**A:** It is set per task in the `TASKS` list in `server/environment.py`.
+
+- Current dataset uses small step budgets (for example, 2-3 in the built-in tasks).
+- `GET /metadata` lists task IDs, not per-task step limits.
+- `GET /state` returns `max_steps` for the currently active task.
 
 ### Q: Can I modify tasks after reset?
 **A:** No, tasks are immutable once loaded. Reset to start new task.
 
 ### Q: What happens if I exceed max_steps?
-**A:** You can still step, but task is marked `done=true` and no more rewards.
+**A:** Once the episode is done, calling `/step` again returns an error (`Episode already completed. Call reset() to start a new one.`).
 
 ---
 
@@ -170,7 +181,7 @@ docker logs -f <container_id>
 **A:** Yes! Add FastAPI security middleware. Check FastAPI docs.
 
 ### Q: Can I add CORS for browser access?
-**A:** Already included! The API accepts requests from any origin.
+**A:** Not enabled by default in this repo. Add FastAPI CORS middleware if your frontend needs cross-origin browser access.
 
 ---
 

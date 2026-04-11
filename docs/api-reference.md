@@ -8,6 +8,8 @@ Complete documentation of all REST API endpoints.
 http://localhost:7860
 ```
 
+For Local/Docker/HF base URLs and port mapping details, see [Access URLs and Ports](./access-urls-and-ports.md).
+
 ## Authentication
 
 No authentication required (can be added if needed).

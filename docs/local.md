@@ -14,6 +14,8 @@ Detailed guide for running on your local machine.
 
 ## Setup Steps
 
+For the complete Local/Docker/HF URL and port matrix, see [Access URLs and Ports](./access-urls-and-ports.md).
+
 ### 1. Verify Python
 
 ```bash

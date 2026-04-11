@@ -4,6 +4,8 @@ Complete step-by-step installation instructions for all scenarios.
 
 ## 🎯 Choose Your Path
 
+For access URLs, ports, and run-mode verification, use [Access URLs and Ports](./access-urls-and-ports.md).
+
 - **[🏃 Quick Start](#quick-installation)** (5 minutes) - Just run it!
 - **[🔧 Detailed Local](#detailed-local-installation)** (15 minutes) - Full explanation
 - **[🐳 Docker](#docker-installation)** (10 minutes) - Container setup

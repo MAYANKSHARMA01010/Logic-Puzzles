@@ -35,8 +35,8 @@ python inference.py
 
 ### Current Space
 
-- Space page: https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv
-- Live URL: https://manku69-forecast-audit-openenv.hf.space
+- Space page: [https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv](https://huggingface.co/spaces/Manku69/Forecast-Audit-OpenEnv)
+- Live URL: [https://manku69-forecast-audit-openenv.hf.space](https://manku69-forecast-audit-openenv.hf.space)
 
 ### Live API smoke tests
 
@@ -46,19 +46,19 @@ SPACE_URL="https://manku69-forecast-audit-openenv.hf.space"
 curl "$SPACE_URL/health"
 
 curl -X POST "$SPACE_URL/reset" \
-	-H "Content-Type: application/json" \
-	-d '{"difficulty":"easy"}'
+  -H "Content-Type: application/json" \
+  -d '{"difficulty":"easy"}'
 
 curl -X POST "$SPACE_URL/step" \
-	-H "Content-Type: application/json" \
-	-d '{
-		"operation": "impute",
-		"target_index": 3,
-		"predicted_value": 135.0,
-		"severity": "low",
-		"violated_constraints": [],
-		"rationale": "Stable +5 ramp"
-	}'
+  -H "Content-Type: application/json" \
+  -d '{
+    "operation": "impute",
+    "target_index": 3,
+    "predicted_value": 135.0,
+    "severity": "low",
+    "violated_constraints": [],
+    "rationale": "Stable +5 ramp"
+  }'
 
 curl "$SPACE_URL/state"
 ```
@@ -78,3 +78,5 @@ source scripts/setup_env.sh
 ```
 
 The script prints a JSON summary including `task_scores` and `average_score`.
+
+For complete URL/port mapping and verification commands across Local, Docker, and HF, see [Access URLs and Ports](../access-urls-and-ports.md).

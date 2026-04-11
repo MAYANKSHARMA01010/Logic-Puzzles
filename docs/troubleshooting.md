@@ -22,9 +22,14 @@ lsof -i :7860
 # Kill the process
 kill -9 <PID>
 
-# Or use a different port (modify server/app.py)
-python -m server.app --port 8000
+# Or run on a different local port
+uvicorn server.app:app --host 0.0.0.0 --port 8000
+
+# For Docker, remap host port instead
+docker run --rm -p 8000:7860 forecast-audit-openenv
 ```
+
+See [Access URLs and Ports](./access-urls-and-ports.md) for the full run-mode matrix.
 
 ---
 
