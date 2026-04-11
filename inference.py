@@ -11,8 +11,9 @@ from server.environment import TASK_ORDER, TASKS_BY_ID
 
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o-mini")
-BASE_URL = os.getenv("OPENAI_BASE_URL")
-API_KEY = os.getenv("OPENAI_API_KEY")
+# Validator-provided credentials should take precedence for official scoring.
+BASE_URL = os.getenv("API_BASE_URL") or os.getenv("OPENAI_BASE_URL")
+API_KEY = os.getenv("API_KEY") or os.getenv("OPENAI_API_KEY")
 TEMPERATURE = float(os.getenv("TEMPERATURE", "0.0"))
 MAX_TOKENS = int(os.getenv("MAX_TOKENS", "220"))
 
