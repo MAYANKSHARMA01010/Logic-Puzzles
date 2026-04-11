@@ -62,7 +62,7 @@ http://localhost:7860/docs
 
 ### Build & Run
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 docker build -t forecast-audit-openenv .
 docker run --rm -p 7860:7860 forecast-audit-openenv
 ```
@@ -110,6 +110,37 @@ curl -X POST http://localhost:7860/step \
 #### 3. State
 ```bash
 curl http://localhost:7860/state
+```
+
+---
+
+## ✅ Verify All Modes
+
+### Local mode
+
+```bash
+python validate.py
+python inference.py
+python -c "from collections import Counter; from server.environment import TASKS; print(len(TASKS), Counter(t.difficulty for t in TASKS))"
+```
+
+Expected: validation passes and task count is `33` with `11` each difficulty.
+
+### Docker mode
+
+```bash
+curl http://127.0.0.1:7860/health
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"easy"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"medium"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"hard"}'
+```
+
+### Hugging Face Space mode
+
+```bash
+SPACE_URL="https://manku69-forecast-audit-openenv.hf.space"
+curl "$SPACE_URL/health"
+curl -X POST "$SPACE_URL/reset" -H "Content-Type: application/json" -d '{"difficulty":"easy"}'
 ```
 
 ---

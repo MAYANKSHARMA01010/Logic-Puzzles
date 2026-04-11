@@ -14,7 +14,7 @@ Complete guide for running with Docker.
 ## Quick Start
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 docker build -t forecast-audit-openenv .
 docker run --rm -p 7860:7860 forecast-audit-openenv
 ```
@@ -46,7 +46,7 @@ docker run hello-world
 ### 2. Navigate Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 ls Dockerfile  # Verify Dockerfile exists
 ```
 
@@ -86,6 +86,19 @@ INFO:     Uvicorn running on http://0.0.0.0:7860
 ```
 http://localhost:7860/docs
 ```
+
+### 5b. Verify API From Host
+
+Open a second terminal and run:
+
+```bash
+curl http://127.0.0.1:7860/health
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"easy"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"medium"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"hard"}'
+```
+
+Expected: `/health` returns `{"status":"healthy"}` and each `/reset` returns a valid observation for the requested difficulty.
 
 ### 6. Stop Container
 

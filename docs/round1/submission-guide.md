@@ -9,6 +9,13 @@ chmod +x scripts/validate-submission.sh
 ./scripts/validate-submission.sh
 ```
 
+Recommended local preflight:
+
+```bash
+python validate.py
+python inference.py
+```
+
 ## What the judges check
 
 - The Space responds to `POST /reset`
@@ -55,6 +62,13 @@ curl -X POST "$SPACE_URL/step" \
 
 curl "$SPACE_URL/state"
 ```
+
+Expected responses:
+
+- `GET /health` returns `{"status":"healthy"}`
+- `POST /reset` returns JSON with `observation` and `done`
+- `POST /step` returns JSON with `observation`, `reward`, `done`, and `info`
+- `GET /state` returns current state JSON
 
 ## Baseline run
 

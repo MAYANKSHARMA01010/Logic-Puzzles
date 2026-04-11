@@ -27,7 +27,7 @@ Should show 3.11 or higher.
 ### 2. Navigate Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 cat requirements.txt  # Verify files exist
 ```
 
@@ -134,6 +134,7 @@ Now changes auto-reload without restarting.
 ```bash
 python validate.py  # Validation checks
 python inference.py  # Baseline scoring
+python -c "from collections import Counter; from server.environment import TASKS; print(len(TASKS), Counter(t.difficulty for t in TASKS))"  # Dataset coverage
 ```
 
 ### Debug Mode

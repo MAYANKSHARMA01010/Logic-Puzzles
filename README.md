@@ -47,9 +47,35 @@ See the dedicated setup pages:
 
 Use [docs/local.md](docs/local.md) for full local run steps.
 
+Quick local verification:
+
+```bash
+python validate.py
+python inference.py
+python -c "from collections import Counter; from server.environment import TASKS; print(len(TASKS), Counter(t.difficulty for t in TASKS))"
+```
+
+Expected: validation passes, inference prints summary JSON, and task counts show 33 total with 11 each for easy/medium/hard.
+
 ## Docker
 
 Use [docs/docker.md](docs/docker.md) for Docker build and run steps.
+
+Quick Docker verification:
+
+```bash
+docker build -t forecast-audit-openenv .
+docker run --rm -p 7860:7860 forecast-audit-openenv
+```
+
+In another terminal:
+
+```bash
+curl http://127.0.0.1:7860/health
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"easy"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"medium"}'
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"hard"}'
+```
 
 ## Hugging Face Space
 
@@ -80,6 +106,8 @@ curl -X POST "$SPACE_URL/step" \
 
 curl "$SPACE_URL/state"
 ```
+
+Expected: `/health` returns `{"status":"healthy"}`, and `/reset` and `/step` return valid JSON payloads.
 
 ## API Endpoints
 

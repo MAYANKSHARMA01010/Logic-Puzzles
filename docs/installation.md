@@ -21,7 +21,7 @@ Complete step-by-step installation instructions for all scenarios.
 
 ### Commands
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -53,7 +53,7 @@ python3 --version
 ### Step 2: Navigate to Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 pwd  # Shows current directory
 ls -la  # Lists files
 ```
@@ -158,7 +158,7 @@ http://localhost:7860/docs
 ### Step 1: Navigate to Project
 
 ```bash
-cd /Users/mayanksharma/Desktop/Projects/Forecast-Audit
+cd Forecast-Audit
 ```
 
 ### Step 2: Build Image
