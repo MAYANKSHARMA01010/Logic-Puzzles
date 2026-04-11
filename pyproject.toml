@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forecast-audit-openenv"
+version = "1.0.0"
+description = "Forecast-Audit OpenEnv environment for time-series QA and forecast auditing tasks."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Mayank Sharma" }
+]
+dependencies = [
+  "fastapi>=0.104.0",
+  "uvicorn>=0.24.0",
+  "pydantic>=2.0.0",
+  "openai>=1.0.0",
+  "httpx>=0.24.0",
+  "openenv-core>=0.1.0"
+]
+
+[project.scripts]
+server = "server.app:main"
