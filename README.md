@@ -124,6 +124,21 @@ For a consolidated Local/Docker/HF access matrix, see [docs/access-urls-and-port
 
 Use [docs/round1/submission-guide.md](docs/round1/submission-guide.md) for Round 1 validation and submission checks.
 
+## OpenEnv Deploy
+
+```bash
+source .venv/bin/activate
+source scripts/setup_env.sh
+openenv validate
+openenv push --repo-id your-username/forecast-audit-openenv
+```
+
+Or use the helper script:
+
+```bash
+bash scripts/deploy_openenv.sh your-username/forecast-audit-openenv
+```
+
 ## Project Structure
 
 ```text

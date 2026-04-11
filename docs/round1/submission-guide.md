@@ -28,10 +28,33 @@ python inference.py
 
 1. Create a Hugging Face Space
 2. Choose Docker
-3. Push the repo
-4. Add required Secrets (`HF_TOKEN`, `API_BASE_URL`, `MODEL_NAME`, and `IMAGE_NAME` if needed)
-5. Wait for the build
-6. Test the live Space URL with `/reset` and `/step`
+3. Validate locally: `openenv validate`
+4. Deploy with OpenEnv CLI: `openenv push --repo-id <username>/<space-name>`
+5. Add required Secrets (`HF_TOKEN`, `API_BASE_URL`, `MODEL_NAME`, and `IMAGE_NAME` if needed)
+6. Wait for the build
+7. Test the live Space URL with `/reset` and `/step`
+
+### OpenEnv Deploy Command
+
+```bash
+source .venv/bin/activate
+source scripts/setup_env.sh
+
+# Validate before deploy
+openenv validate
+
+# Deploy to HF Space
+openenv push --repo-id your-username/forecast-audit-openenv
+
+# Optional: private space
+openenv push --repo-id your-username/forecast-audit-openenv --private
+```
+
+If you prefer a reusable wrapper:
+
+```bash
+bash scripts/deploy_openenv.sh your-username/forecast-audit-openenv
+```
 
 ### Current Space
 
