@@ -108,8 +108,18 @@ def main() -> None:
 
     results: List[Dict[str, Any]] = []
     for task_id in TASK_ORDER:
+        print(f"[START] task={task_id}", flush=True)
         action = llm_policy(client, task_id) if client else heuristic_policy(task_id)
         result = evaluate_action(task_id, action)
+        step_count = result["info"].get("step_count", 1)
+        print(
+            f"[STEP] task={task_id} step={step_count} reward={result['score']:.4f}",
+            flush=True,
+        )
+        print(
+            f"[END] task={task_id} score={result['score']:.4f} steps={step_count}",
+            flush=True,
+        )
         results.append(result)
 
     average_score = sum(item["score"] for item in results) / len(results)
