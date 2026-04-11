@@ -10,7 +10,7 @@ This page is the single source of truth for where to access the app in local, Do
 ## Access Matrix
 
 | Mode | How you run | Base URL to use | Docs URL | Notes |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | Local Python | `python -m server.app` | `http://127.0.0.1:7860` | `http://127.0.0.1:7860/docs` | Uses app default port 7860 |
 | Docker (default map) | `docker run --rm -p 7860:7860 forecast-audit-openenv` | `http://127.0.0.1:7860` | `http://127.0.0.1:7860/docs` | Host 7860 -> container 7860 |
 | Docker (custom host port) | `docker run --rm -p 8000:7860 forecast-audit-openenv` | `http://127.0.0.1:8000` | `http://127.0.0.1:8000/docs` | Host port is 8000, app port remains 7860 |

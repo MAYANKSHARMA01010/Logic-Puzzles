@@ -7,13 +7,14 @@ sdk: docker
 pinned: false
 ---
 
-# Forecast-Audit
+## Forecast-Audit
 
 Repository: [https://github.com/MAYANKSHARMA01010/Forecast-Audit](https://github.com/MAYANKSHARMA01010/Forecast-Audit)
 
 Forecast-Audit is an OpenEnv-compatible benchmark environment for forecast and time-series quality auditing.
 
 The agent acts like a data/forecast analyst and must:
+
 - identify data quality issues
 - repair missing or corrupted values
 - respect business/operational constraints

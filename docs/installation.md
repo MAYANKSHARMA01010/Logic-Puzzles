@@ -1,347 +1,126 @@
-# 📚 Complete Installation Guide
+# Installation Guide
 
-Complete step-by-step installation instructions for all scenarios.
+This page covers installation for local Python and Docker workflows.
 
-## 🎯 Choose Your Path
+## Quick Install
 
-For access URLs, ports, and run-mode verification, use [Access URLs and Ports](./access-urls-and-ports.md).
+```bash
+git clone https://github.com/MAYANKSHARMA01010/Forecast-Audit
+cd Forecast-Audit
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+cp .env.example .env
+```
 
-- **[🏃 Quick Start](#quick-installation)** (5 minutes) - Just run it!
-- **[🔧 Detailed Local](#detailed-local-installation)** (15 minutes) - Full explanation
-- **[🐳 Docker](#docker-installation)** (10 minutes) - Container setup
-- **[☁️ Cloud](#cloud-deployment)** (30 minutes) - AWS ECS
+Then run:
 
----
+```bash
+python validate.py
+```
 
-<a id="quick-installation"></a>
-## ⚡ Quick Installation
+## Local Python Installation
 
-### Prerequisites
+### Requirements
+
 - Python 3.11+
-- Terminal/Command line
-- ~200MB disk space
+- `pip`
+- Terminal access
 
-### Commands
+### Steps
+
+1. Create and activate virtual environment.
+
 ```bash
-cd Forecast-Audit
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python validate.py
-python -m server.app
 ```
 
-Visit: `http://localhost:7860/docs`
-
-✅ **Done in 5 minutes!**
-
----
-
-<a id="detailed-local-installation"></a>
-## 🔧 Detailed Local Installation
-
-### Step 1: Check Python
+1. Install dependencies.
 
 ```bash
-python --version
-python3 --version
-```
-
-**Need Python?**
-- **macOS**: `brew install python@3.11`
-- **Ubuntu**: `sudo apt-get install python3.11`
-- **Windows**: https://www.python.org/downloads/
-
-### Step 2: Navigate to Project
-
-```bash
-cd Forecast-Audit
-pwd  # Shows current directory
-ls -la  # Lists files
-```
-
-Expected files:
-```
-requirements.txt
-server/
-models.py
-README.md
-Dockerfile
-```
-
-### Step 3: Create Virtual Environment
-
-```bash
-# Create venv
-python -m venv .venv
-
-# Activate (macOS/Linux)
-source .venv/bin/activate
-
-# Activate (Windows)
-.venv\Scripts\activate
-
-# Verify activation (should see (.venv) prefix)
-which python  # should show .venv/bin/python
-```
-
-### Step 4: Upgrade pip
-
-```bash
-pip install --upgrade pip setuptools wheel
-pip --version
-```
-
-### Step 5: Install Dependencies
-
-```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Expected packages:
-```
-✓ fastapi
-✓ uvicorn
-✓ pydantic
-✓ openai
-✓ httpx
-✓ pyyaml
-✓ openenv-core
+1. Configure environment values.
+
+```bash
+cp .env.example .env
 ```
 
-### Step 6: Verify Installation
+1. Update `.env` values as needed:
+
+- `HF_TOKEN`
+- `API_BASE_URL`
+- `MODEL_NAME`
+
+1. Validate setup.
 
 ```bash
 python validate.py
+python inference.py
 ```
 
-Expected output:
-```
-✓ reset() and state() are consistent
-✓ reward range stays within [0.0, 1.0]
-✓ grading is deterministic
-✓ hard task allows multi-step interaction
+## Docker Installation
 
-All local validation checks passed.
-```
+### Docker Requirements
 
-### Step 7: Start Server
+- Docker Desktop (macOS/Windows) or Docker Engine (Linux)
 
-```bash
-python -m server.app
-```
-
-Expected output:
-```
-INFO:     Started server process [8785]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:7860 (Press CTRL+C to quit)
-```
-
-### Step 8: Open in Browser
-
-```
-http://localhost:7860/docs
-```
-
-✅ **Installation Complete!**
-
----
-
-<a id="docker-installation"></a>
-## 🐳 Docker Installation
-
-### Prerequisites
-- Docker installed ([Installation Guide](https://docs.docker.com/get-docker/))
-- Docker Desktop running (macOS/Windows)
-- ~1GB disk space
-
-### Step 1: Navigate to Project
-
-```bash
-cd Forecast-Audit
-```
-
-### Step 2: Build Image
+### Build
 
 ```bash
 docker build -t forecast-audit-openenv .
 ```
 
-**Watch for:**
-- `Step 1/5` through `Step 5/5`
-- Final: `Successfully tagged forecast-audit-openenv:latest`
-- Time: ~5 minutes (first time)
-
-### Step 3: Run Container
+### Run
 
 ```bash
 docker run --rm -p 7860:7860 forecast-audit-openenv
 ```
 
-Expected output:
-```
-INFO:     Uvicorn running on http://0.0.0.0:7860
-```
-
-### Step 4: Open in Browser
-
-```
-http://localhost:7860/docs
-```
-
-### Step 5: Stop Container
+### Verify
 
 ```bash
-CTRL+C  # in terminal
+curl http://127.0.0.1:7860/health
+curl -X POST http://127.0.0.1:7860/reset -H "Content-Type: application/json" -d '{"difficulty":"easy"}'
 ```
 
-✅ **Docker Setup Complete!**
+## OpenEnv CLI Setup
 
----
-
-<a id="cloud-deployment"></a>
-## ☁️ Cloud Deployment
-
-### AWS Elastic Container Service (ECS)
-
-#### Step 1: Push Image to ECR
+Install OpenEnv CLI:
 
 ```bash
-# Login to AWS
-aws ecr get-login-password --region us-east-1 | \
-  docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-1.amazonaws.com
-
-# Tag image
-docker tag forecast-audit-openenv:latest \
-  123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:latest
-
-# Push
-docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:latest
+pip install openenv-core
 ```
 
-#### Step 2: Create ECS Task Definition
-
-```json
-{
-  "family": "forecast-audit",
-  "containerDefinitions": [
-    {
-      "name": "forecast-audit",
-      "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/forecast-audit-openenv:latest",
-      "portMappings": [
-        {
-          "containerPort": 7860,
-          "hostPort": 7860,
-          "protocol": "tcp"
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### Step 3: Create ECS Service
+Validate project:
 
 ```bash
-aws ecs create-service \
-  --cluster my-cluster \
-  --service-name forecast-audit \
-  --task-definition forecast-audit:1 \
-  --desired-count 1
+openenv validate
 ```
 
----
-
-## ✅ Verification Checklist
-
-### Local Installation
-- [ ] Python 3.11+ installed
-- [ ] Virtual environment created
-- [ ] Virtual environment activated
-- [ ] Dependencies installed
-- [ ] `validate.py` passes all checks
-- [ ] Server starts without errors
-- [ ] Browser opens `/docs` page
-
-### Docker Installation
-- [ ] Docker installed and running
-- [ ] Image builds successfully
-- [ ] Container starts without errors
-- [ ] Port 7860 is accessible
-- [ ] Browser opens `/docs` page
-
-### API Endpoints
-- [ ] GET `/health` returns 200
-- [ ] GET `/metadata` returns task list
-- [ ] POST `/reset` initializes task
-- [ ] POST `/step` accepts actions
-- [ ] GET `/state` returns current state
-
----
-
-## 🔄 Re-installation / Fresh Start
-
-### Complete Reset
+Deploy to Hugging Face Space:
 
 ```bash
-# Deactivate venv
-deactivate
+openenv push --repo-id Manku69/Forecast-Audit-OpenEnv
+```
 
-# Remove venv
-rm -rf .venv
+## Validation Checklist
 
-# Recreate
-python -m venv .venv
-
-# Activate
-source .venv/bin/activate
-
-# Install
-pip install -r requirements.txt
-
-# Validate
+```bash
 python validate.py
+python inference.py
+bash scripts/validate-submission.sh
+openenv validate
 ```
 
----
+## Related Docs
 
-## 🚫 Common Installation Issues
-
-### Issue: "command not found: python3"
-**Solution**: Install Python 3.11+
-
-### Issue: "ModuleNotFoundError: No module named 'fastapi'"
-**Solution**: 
-```bash
-source .venv/bin/activate  # Activate venv
-pip install -r requirements.txt  # Reinstall
-```
-
-### Issue: "Permission denied" on Linux/macOS
-**Solution**:
-```bash
-chmod +x .venv/bin/python
-```
-
-### Issue: Docker: "image not found"
-**Solution**:
-```bash
-docker build -t forecast-audit-openenv .  # Build first
-docker run -p 7860:7860 forecast-audit-openenv
-```
-
----
-
-## 📋 Installation Summary
-
-| Method | Time | Difficulty | Best For |
-|--------|------|------------|----------|
-| Local | 5min | Easy | Development |
-| Docker | 10min | Medium | Consistency |
-| AWS ECS | 30min | Hard | Production |
-
----
-
-**Installation Complete!** Next: [Quick Start](./quick-start.md)
+- [Quick Start](./quick-start.md)
+- [Local Setup](./local.md)
+- [Docker Guide](./docker.md)
+- [Environment Variables](./environment-variables.md)
+- [Round 1 Submission Guide](./round1/submission-guide.md)

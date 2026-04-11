@@ -1,47 +1,41 @@
-# 📡 API Reference
+# API Reference
 
-Complete documentation of all REST API endpoints.
+Forecast-Audit exposes a small REST API for task lifecycle management.
 
 ## Base URL
 
-```
+```text
 http://localhost:7860
 ```
 
-For Local/Docker/HF base URLs and port mapping details, see [Access URLs and Ports](./access-urls-and-ports.md).
+For local, Docker, and Hugging Face URLs, see [Access URLs and Ports](./access-urls-and-ports.md).
 
 ## Authentication
 
-No authentication required (can be added if needed).
+No authentication is required for API routes.
 
----
+## Endpoints
 
-## Endpoints Overview
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/` | Root service metadata |
+| `GET` | `/health` | Health check |
+| `GET` | `/metadata` | Task metadata and order |
+| `GET` | `/schema` | JSON schemas for action/observation/reward/state |
+| `POST` | `/reset` | Start a new task episode |
+| `POST` | `/step` | Submit an action and receive reward |
+| `GET` | `/state` | Current environment state |
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/` | API root info |
-| GET | `/health` | Health check |
-| GET | `/metadata` | Task metadata |
-| GET | `/schema` | Data schemas |
-| POST | `/reset` | Initialize task |
-| POST | `/step` | Execute action |
-| GET | `/state` | Current state |
+## GET /
 
----
+Returns service-level metadata.
 
-## ✅ Detailed Endpoint Documentation
-
-### 1. GET / (Root)
-
-Returns basic API information.
-
-**Request:**
 ```bash
 curl http://localhost:7860/
 ```
 
-**Response (200 OK):**
+Example response:
+
 ```json
 {
   "name": "forecast-audit-openenv",
@@ -51,108 +45,67 @@ curl http://localhost:7860/
 }
 ```
 
----
+## GET /health
 
-### 2. GET /health (Health Check)
+Returns service health.
 
-Checks if server is operational.
-
-**Request:**
 ```bash
 curl http://localhost:7860/health
 ```
 
-**Response (200 OK):**
+Example response:
+
 ```json
 {
   "status": "healthy"
 }
 ```
 
-**Use Cases:**
-- Load balancer health checks
-- Monitoring/uptime detection
-- Readiness probes
+## GET /metadata
 
----
+Returns task order and high-level environment metadata.
 
-### 3. GET /metadata (Task Metadata)
-
-Returns available tasks and environment info.
-
-**Request:**
 ```bash
 curl http://localhost:7860/metadata
 ```
 
-**Response (200 OK):**
-```json
-{
-  "name": "forecast-audit-openenv",
-  "task_order": [
-    "easy_ops_missing_001",
-    "medium_finance_anomaly_001",
-    "hard_energy_forecast_001"
-  ],
-  "description": "Real-world numerical QA and forecast auditing environment.",
-  "reward_range": [0.0, 1.0]
-}
-```
+## GET /schema
 
-**Fields:**
-- `name`: Project identifier
-- `task_order`: Available task IDs
-- `description`: Brief description
-- `reward_range`: Min/max possible rewards
+Returns JSON schema definitions for core data models.
 
----
-
-### 4. GET /schema (Data Schemas)
-
-Returns JSON schemas for all data structures.
-
-**Request:**
 ```bash
 curl http://localhost:7860/schema
 ```
 
-**Response (200 OK):**
+## POST /reset
+
+Starts a new task episode.
+
+Request body:
+
 ```json
 {
-  "action": {...},           // ForecastAuditAction schema
-  "observation": {...},      // ForecastAuditObservation schema
-  "reward": {...},           // RewardModel schema
-  "state": {...}             // ForecastAuditState schema
+  "task_id": "easy_ops_missing_001",
+  "difficulty": "easy"
 }
 ```
 
-**Use Cases:**
-- API client code generation
-- Validation rule extraction
-- Documentation generation
+Notes:
 
----
+- `task_id` is optional.
+- `difficulty` is optional and can be `easy`, `medium`, or `hard`.
+- If both are omitted, the environment rotates through task order.
 
-### 5. POST /reset (Initialize Task)
+Example request:
 
-Initializes a new task/episode.
-
-**Request:**
 ```bash
 curl -X POST http://localhost:7860/reset \
   -H "Content-Type: application/json" \
-  -d '{"task_id": "easy_ops_missing_001"}'
+  -d '{"difficulty":"easy"}'
 ```
 
-**Request Body:**
-```json
-{
-  "task_id": "easy_ops_missing_001",    // Optional: specific task
-  "difficulty": "easy"                   // Optional: easy|medium|hard
-}
-```
+Example response:
 
-**Response (200 OK):**
 ```json
 {
   "observation": {
@@ -176,64 +129,40 @@ curl -X POST http://localhost:7860/reset \
 }
 ```
 
-**Response Fields:**
+## POST /step
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `observation` | Object | Initial task observation |
-| `done` | Boolean | Task completion status |
+Submits an agent action and returns updated observation plus reward.
 
-**Errors:**
+Request body:
 
-| Code | Description |
-|------|-------------|
-| 400 | Invalid task_id or difficulty |
-| 500 | Server error |
-
-**Example:**
-```python
-import requests
-
-response = requests.post(
-    'http://localhost:7860/reset',
-    json={'task_id': 'medium_finance_anomaly_001'}
-)
-print(response.json())
+```json
+{
+  "operation": "impute",
+  "target_index": 3,
+  "predicted_value": 135.0,
+  "severity": "low",
+  "violated_constraints": [],
+  "rationale": "Series follows a +5 linear trend."
+}
 ```
 
----
+Example request:
 
-### 6. POST /step (Execute Action)
-
-Executes an agent action and returns observation + reward.
-
-**Request:**
 ```bash
 curl -X POST http://localhost:7860/step \
   -H "Content-Type: application/json" \
   -d '{
-    "operation": "impute",
-    "target_index": 3,
-    "predicted_value": 135.0,
-    "severity": "low",
-    "violated_constraints": [],
-    "rationale": "The series rises by 5 each hour, so index 3 should be 135."
+    "operation":"impute",
+    "target_index":3,
+    "predicted_value":135.0,
+    "severity":"low",
+    "violated_constraints":[],
+    "rationale":"Series follows a +5 linear trend."
   }'
 ```
 
-**Request Body:**
-```json
-{
-  "operation": "impute|flag_anomaly|accept|repair_and_finalize|escalate",
-  "target_index": null|integer,        // Index of problematic value
-  "predicted_value": null|float,       // Repaired/imputed value
-  "severity": null|"low"|"medium"|"high",
-  "violated_constraints": [],          // List of violated constraint strings
-  "rationale": "string"                // Explanation of action
-}
-```
+Example response:
 
-**Response (200 OK):**
 ```json
 {
   "observation": {
@@ -244,7 +173,10 @@ curl -X POST http://localhost:7860/step \
     "timestamps": ["09:00", "10:00", "11:00", "12:00", "13:00"],
     "values": [120.0, 125.0, 130.0, 135.0, 140.0],
     "issue_type": "missing_value",
-    "constraints": [...],
+    "constraints": [
+      "Weekday ramp is stable at +5 orders/hour.",
+      "No promotions or outages were recorded."
+    ],
     "analyst_note": "Previous action: impute. Reward=1.00. Excellent action. The issue was handled correctly and can be finalized.",
     "step_count": 1,
     "max_steps": 2,
@@ -260,7 +192,7 @@ curl -X POST http://localhost:7860/step \
       "constraints": 0.1,
       "rationale": 0.08,
       "efficiency": 0.05,
-      "penalty": -0.0
+      "penalty": 0.0
     },
     "message": "Excellent action. The issue was handled correctly and can be finalized."
   },
@@ -276,264 +208,39 @@ curl -X POST http://localhost:7860/step \
 }
 ```
 
-**Response Fields:**
+## GET /state
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `observation` | Object | Updated task state |
-| `reward.score` | Float | Overall reward (0.0-1.0) |
-| `reward.components` | Object | Reward component scores |
-| `reward.message` | String | Natural-language feedback message |
-| `done` | Boolean | Is episode finished? |
-| `info` | Object | Task metadata for the processed step |
+Returns current environment state for the active episode.
 
-**Reward Components:**
-- `operation`: Operation choice credit
-- `index`: Target-index correctness credit
-- `value`: Imputation/repair value accuracy credit
-- `severity`: Severity alignment credit
-- `constraints`: Constraint-citation credit
-- `rationale`: Rationale-quality credit
-- `efficiency`: Bonus for solving in fewer steps
-- `penalty`: Negative penalty term
-
-**Operations Allowed:**
-
-```
-operation: "impute"
-  → Use when: Missing value in data
-  → Requires: target_index, predicted_value
-  → Example: Fill in null with 135
-
-operation: "flag_anomaly"
-  → Use when: Corrupted/outlier value
-  → Requires: target_index, severity
-  → Example: Mark suspicious spike
-
-operation: "accept"
-  → Use when: Data is valid as-is
-  → Requires: None
-  → Example: No action needed
-
-operation: "repair_and_finalize"
-  → Use when: Fix AND complete
-  → Requires: target_index, predicted_value, severity
-  → Example: Repair and submit
-
-operation: "escalate"
-  → Use when: Needs human review
-  → Requires: violated_constraints
-  → Example: Operational constraint violation
-```
-
-**Errors:**
-
-| Code | Description |
-|------|-------------|
-| 400 | Invalid action format or values |
-| 422 | Validation error |
-| 500 | Server error |
-
-**Example:**
-```python
-import requests
-
-action = {
-    "operation": "impute",
-    "target_index": 3,
-    "predicted_value": 135.0,
-    "severity": "low",
-    "violated_constraints": [],
-    "rationale": "Stable +5 pattern"
-}
-
-response = requests.post(
-    'http://localhost:7860/step',
-    json=action
-)
-
-result = response.json()
-print(f"Reward: {result['reward']['score']}")
-print(f"Done: {result['done']}")
-```
-
----
-
-### 7. GET /state (Current State)
-
-Returns current environment state.
-
-**Request:**
 ```bash
 curl http://localhost:7860/state
 ```
 
-**Response (200 OK):**
+## Error Responses
+
+| Status | Meaning |
+| --- | --- |
+| `400` | Invalid `task_id`, `difficulty`, or action for current state |
+| `422` | Request body validation error |
+
+Typical `400` response:
+
 ```json
 {
-  "task_id": "easy_ops_missing_001",
-  "difficulty": "easy",
-  "current_observation": {
-    "task_id": "easy_ops_missing_001",
-    "difficulty": "easy",
-    "domain": "operations",
-    "metric_name": "warehouse_orders_per_hour",
-    "timestamps": ["09:00", "10:00", "11:00", "12:00", "13:00"],
-    "values": [120.0, 125.0, 130.0, 135.0, 140.0],
-    "issue_type": "missing_value",
-    "constraints": [...],
-    "analyst_note": "...",
-    "step_count": 1,
-    "max_steps": 2,
-    "history_summary": "..."
-  },
-  "done": true,
-  "step_count": 1,
-  "max_steps": 2,
-  "cumulative_score": 1.0,
-  "expected_action": {
-    "operation": "impute",
-    "target_index": 3,
-    "predicted_value": 135.0,
-    "severity": "low",
-    "violated_constraints": []
-  },
-  "reward_history": [{"score": 1.0, "components": {"operation": 0.35}}]
+  "detail": "Unknown task_id: invalid_task"
 }
 ```
 
-**Response Fields:**
+Typical `422` response:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `task_id` | String | Current task ID |
-| `difficulty` | String | Current task difficulty |
-| `done` | Boolean | Is task finished? |
-| `step_count` | Integer | Steps taken so far |
-| `current_observation` | Object | Task observation |
-| `max_steps` | Integer | Step budget for this task |
-| `cumulative_score` | Float | Sum of reward scores so far |
-| `expected_action` | Object | Reference target action for the task |
-| `reward_history` | Array | Reward entries from previous steps |
-
-**Use Cases:**
-- Query state without taking action
-- Monitor episode progress
-- Verify state after action
-
----
-
-## 🔄 Typical Workflow
-
-### Complete Task Flow
-
-```
-1. Reset
-POST /reset
-└─ Get initial observation
-   
-2. Analyze
-(Process observation offline)
-
-3. Step
-POST /step (action)
-└─ Get reward + new observation
-   
-4. Check Result
-GET /state
-└─ Verify final state
-```
-
-### Code Example
-
-```python
-import requests
-
-BASE_URL = "http://localhost:7860"
-
-# 1. Reset
-reset_resp = requests.post(
-    f"{BASE_URL}/reset",
-    json={"task_id": "easy_ops_missing_001"}
-)
-obs = reset_resp.json()["observation"]
-print(f"Task: {obs['task_id']}")
-print(f"Issue: {obs['issue_type']}")
-print(f"Values: {obs['values']}")
-
-# 2. Think & prepare action
-action = {
-    "operation": "impute",
-    "target_index": 3,
-    "predicted_value": 135.0,
-    "severity": "low",
-    "violated_constraints": [],
-    "rationale": "Series is +5 per hour"
-}
-
-# 3. Execute
-step_resp = requests.post(
-    f"{BASE_URL}/step",
-    json=action
-)
-result = step_resp.json()
-print(f"Reward: {result['reward']['score']}")
-print(f"Done: {result['done']}")
-
-# 4. Check state
-state_resp = requests.get(f"{BASE_URL}/state")
-final_state = state_resp.json()
-print(f"Final values: {final_state['current_observation']['values']}")
-```
-
----
-
-## 🎯 Error Responses
-
-### 400 Bad Request
-```json
-{
-  "detail": "Invalid task_id: unknown_task"
-}
-```
-
-### 422 Validation Error
 ```json
 {
   "detail": [
     {
-      "loc": ["body", "target_index"],
-      "msg": "field required",
-      "type": "value_error.missing"
+      "loc": ["body", "operation"],
+      "msg": "Input should be 'impute', 'flag_anomaly', 'accept', 'repair_and_finalize' or 'escalate'",
+      "type": "enum"
     }
   ]
 }
 ```
-
-### 500 Server Error
-```json
-{
-  "detail": "Internal server error"
-}
-```
-
----
-
-## 📊 Rate Limiting
-
-Currently: **No rate limiting**
-
-Recommended for production: Add rate limiting middleware
-
----
-
-## 🔗 Interactive Documentation
-
-Visit Swagger UI for interactive testing:
-```
-http://localhost:7860/docs
-```
-
----
-
-**API Reference Complete** ✅

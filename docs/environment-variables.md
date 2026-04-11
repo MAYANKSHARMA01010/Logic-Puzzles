@@ -14,13 +14,14 @@ The project uses environment variables so secrets stay out of the codebase and t
 cp .env.example .env
 ```
 
-2. Open `.env` and fill in your real values.
-3. Keep placeholders in `.env.example` only.
+1. Open `.env` and fill in your real values.
+
+1. Keep placeholders in `.env.example` only.
 
 ## Variables
 
 | Variable | Required | What it is for | Where it is used |
-|---|---:|---|---|
+| --- | ---: | --- | --- |
 | `HF_TOKEN` | Yes | Hugging Face token for validation and Space-related workflows | `scripts/validate-submission.sh`, `scripts/setup_env.sh`, `openenv.yaml` |
 | `API_BASE_URL` | Yes | Base URL for the OpenAI-compatible API router | `scripts/setup_env.sh`, `openenv.yaml`, `inference.py` |
 | `MODEL_NAME` | Yes | Model name used by the baseline runner | `scripts/setup_env.sh`, `openenv.yaml`, `inference.py` |
