@@ -183,7 +183,7 @@ docker logs -f <container_id>
 - Check network latency: `curl -w "@curl-format.txt" ...`
 
 ### Q: Can I deploy to the cloud?
-**A:** Yes! Works on AWS, Google Cloud, Azure. Use Docker image.
+**A:** Yes. The documented cloud path in this project is AWS ECS (via ECR + ECS service).
 
 ### Q: How many requests/second can it handle?
 **A:** Single instance: ~100 req/s. Use load balancer for more.

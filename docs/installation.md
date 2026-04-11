@@ -7,10 +7,11 @@ Complete step-by-step installation instructions for all scenarios.
 - **[🏃 Quick Start](#quick-installation)** (5 minutes) - Just run it!
 - **[🔧 Detailed Local](#detailed-local-installation)** (15 minutes) - Full explanation
 - **[🐳 Docker](#docker-installation)** (10 minutes) - Container setup
-- **[☁️ Cloud](#cloud-deployment)** (30 minutes) - AWS/GCP/Azure
+- **[☁️ Cloud](#cloud-deployment)** (30 minutes) - AWS ECS
 
 ---
 
+<a id="quick-installation"></a>
 ## ⚡ Quick Installation
 
 ### Prerequisites
@@ -34,6 +35,7 @@ Visit: `http://localhost:7860/docs`
 
 ---
 
+<a id="detailed-local-installation"></a>
 ## 🔧 Detailed Local Installation
 
 ### Step 1: Check Python
@@ -145,6 +147,7 @@ http://localhost:7860/docs
 
 ---
 
+<a id="docker-installation"></a>
 ## 🐳 Docker Installation
 
 ### Prerequisites
@@ -196,6 +199,7 @@ CTRL+C  # in terminal
 
 ---
 
+<a id="cloud-deployment"></a>
 ## ☁️ Cloud Deployment
 
 ### AWS Elastic Container Service (ECS)
@@ -244,35 +248,6 @@ aws ecs create-service \
   --service-name forecast-audit \
   --task-definition forecast-audit:1 \
   --desired-count 1
-```
-
----
-
-### Google Cloud Run
-
-```bash
-# Build
-gcloud builds submit --tag gcr.io/PROJECT_ID/forecast-audit-openenv
-
-# Deploy
-gcloud run deploy forecast-audit-openenv \
-  --image gcr.io/PROJECT_ID/forecast-audit-openenv \
-  --platform managed \
-  --region us-central1 \
-  --port 7860
-```
-
----
-
-### Azure Container Instances
-
-```bash
-az container create \
-  --resource-group myResourceGroup \
-  --name forecast-audit \
-  --image forecast-audit-openenv:latest \
-  --ports 7860 \
-  --ip-address Public
 ```
 
 ---
@@ -363,7 +338,7 @@ docker run -p 7860:7860 forecast-audit-openenv
 |--------|------|------------|----------|
 | Local | 5min | Easy | Development |
 | Docker | 10min | Medium | Consistency |
-| Cloud | 30min | Hard | Production |
+| AWS ECS | 30min | Hard | Production |
 
 ---
 
