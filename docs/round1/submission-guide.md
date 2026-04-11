@@ -15,7 +15,7 @@ chmod +x scripts/validate-submission.sh
 - `openenv.yaml` exists and matches the environment
 - Docker builds successfully
 - `inference.py` runs without errors
-- The task set has easy, medium, and hard puzzles
+- The task set has easy, medium, and hard forecasting-audit tasks
 
 ## Deploy steps
 
@@ -63,4 +63,4 @@ source scripts/setup_env.sh
 .venv/bin/python inference.py
 ```
 
-The script should print `[START]`, `[STEP]`, and `[END]` logs.
+The script prints a JSON summary including `task_scores` and `average_score`.

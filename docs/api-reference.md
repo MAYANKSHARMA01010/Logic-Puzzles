@@ -167,7 +167,7 @@ curl -X POST http://localhost:7860/reset \
     ],
     "analyst_note": "Backfill the missing hour before the report is published.",
     "step_count": 0,
-    "max_steps": 10,
+    "max_steps": 2,
     "history_summary": "Recent weekday mornings have shown a steady linear ramp."
   },
   "done": false
@@ -215,7 +215,7 @@ curl -X POST http://localhost:7860/step \
     "predicted_value": 135.0,
     "severity": "low",
     "violated_constraints": [],
-    "rationale": "The sequence rises by 5 each hour, so index 3 should be 135."
+    "rationale": "The series rises by 5 each hour, so index 3 should be 135."
   }'
 ```
 
@@ -226,7 +226,7 @@ curl -X POST http://localhost:7860/step \
   "target_index": null|integer,        // Index of problematic value
   "predicted_value": null|float,       // Repaired/imputed value
   "severity": null|"low"|"medium"|"high",
-  "violated_constraints": [],          // List of violated constraint indices
+  "violated_constraints": [],          // List of violated constraint strings
   "rationale": "string"                // Explanation of action
 }
 ```
@@ -243,25 +243,33 @@ curl -X POST http://localhost:7860/step \
     "values": [120.0, 125.0, 130.0, 135.0, 140.0],
     "issue_type": "missing_value",
     "constraints": [...],
-    "analyst_note": "Your imputation was correct! The pattern is +5/hour.",
+    "analyst_note": "Previous action: impute. Reward=1.00. Excellent action. The issue was handled correctly and can be finalized.",
     "step_count": 1,
-    "max_steps": 10,
-    "history_summary": "Imputed missing value at 12:00 with 135.0 (correct)."
+    "max_steps": 2,
+    "history_summary": "Recent weekday mornings have shown a steady linear ramp."
   },
   "reward": {
     "score": 1.0,
-    "breakdown": {
-      "operation_correct": 1.0,
-      "index_correct": 1.0,
-      "value_accuracy": 1.0,
-      "severity_alignment": 1.0,
-      "constraints_cited": 1.0,
-      "rationale_quality": 1.0
-    }
+    "components": {
+      "operation": 0.35,
+      "index": 0.15,
+      "value": 0.2,
+      "severity": 0.1,
+      "constraints": 0.1,
+      "rationale": 0.08,
+      "efficiency": 0.05,
+      "penalty": -0.0
+    },
+    "message": "Excellent action. The issue was handled correctly and can be finalized."
   },
   "done": true,
   "info": {
-    "grading_notes": "Perfect imputation! Correctly identified pattern and filled missing value."
+    "task_id": "easy_ops_missing_001",
+    "difficulty": "easy",
+    "issue_type": "missing_value",
+    "max_steps": 2,
+    "step_count": 1,
+    "expected_operation": "impute"
   }
 }
 ```
@@ -272,17 +280,20 @@ curl -X POST http://localhost:7860/step \
 |-------|------|-------------|
 | `observation` | Object | Updated task state |
 | `reward.score` | Float | Overall reward (0.0-1.0) |
-| `reward.breakdown` | Object | Reward component scores |
+| `reward.components` | Object | Reward component scores |
+| `reward.message` | String | Natural-language feedback message |
 | `done` | Boolean | Is episode finished? |
-| `info` | Object | Feedback/grading notes |
+| `info` | Object | Task metadata for the processed step |
 
-**Reward Breakdown:**
-- `operation_correct`: (0 or 1) Is operation type correct?
-- `index_correct`: (0 or 1) Is target index correct?
-- `value_accuracy`: (0-1) How accurate is predicted value?
-- `severity_alignment`: (0-1) Is severity appropriate?
-- `constraints_cited`: (0-1) Are violated constraints identified?
-- `rationale_quality`: (0-1) Is explanation clear?
+**Reward Components:**
+- `operation`: Operation choice credit
+- `index`: Target-index correctness credit
+- `value`: Imputation/repair value accuracy credit
+- `severity`: Severity alignment credit
+- `constraints`: Constraint-citation credit
+- `rationale`: Rationale-quality credit
+- `efficiency`: Bonus for solving in fewer steps
+- `penalty`: Negative penalty term
 
 **Operations Allowed:**
 
@@ -310,7 +321,7 @@ operation: "repair_and_finalize"
 operation: "escalate"
   → Use when: Needs human review
   → Requires: violated_constraints
-  → Example: Pattern violation
+  → Example: Operational constraint violation
 ```
 
 **Errors:**
@@ -359,9 +370,8 @@ curl http://localhost:7860/state
 ```json
 {
   "task_id": "easy_ops_missing_001",
-  "done": true,
-  "step_count": 1,
-  "observation": {
+  "difficulty": "easy",
+  "current_observation": {
     "task_id": "easy_ops_missing_001",
     "difficulty": "easy",
     "domain": "operations",
@@ -372,9 +382,21 @@ curl http://localhost:7860/state
     "constraints": [...],
     "analyst_note": "...",
     "step_count": 1,
-    "max_steps": 10,
+    "max_steps": 2,
     "history_summary": "..."
-  }
+  },
+  "done": true,
+  "step_count": 1,
+  "max_steps": 2,
+  "cumulative_score": 1.0,
+  "expected_action": {
+    "operation": "impute",
+    "target_index": 3,
+    "predicted_value": 135.0,
+    "severity": "low",
+    "violated_constraints": []
+  },
+  "reward_history": [{"score": 1.0, "components": {"operation": 0.35}}]
 }
 ```
 
@@ -383,9 +405,14 @@ curl http://localhost:7860/state
 | Field | Type | Description |
 |-------|------|-------------|
 | `task_id` | String | Current task ID |
+| `difficulty` | String | Current task difficulty |
 | `done` | Boolean | Is task finished? |
 | `step_count` | Integer | Steps taken so far |
-| `observation` | Object | Task observation |
+| `current_observation` | Object | Task observation |
+| `max_steps` | Integer | Step budget for this task |
+| `cumulative_score` | Float | Sum of reward scores so far |
+| `expected_action` | Object | Reference target action for the task |
+| `reward_history` | Array | Reward entries from previous steps |
 
 **Use Cases:**
 - Query state without taking action
@@ -439,7 +466,7 @@ action = {
     "predicted_value": 135.0,
     "severity": "low",
     "violated_constraints": [],
-    "rationale": "Pattern is +5 per hour"
+    "rationale": "Series is +5 per hour"
 }
 
 # 3. Execute
@@ -454,7 +481,7 @@ print(f"Done: {result['done']}")
 # 4. Check state
 state_resp = requests.get(f"{BASE_URL}/state")
 final_state = state_resp.json()
-print(f"Final values: {final_state['observation']['values']}")
+print(f"Final values: {final_state['current_observation']['values']}")
 ```
 
 ---

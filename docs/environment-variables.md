@@ -27,13 +27,8 @@ cp .env.example .env
 | `OPENAI_API_KEY` | Optional | API key used when you want `inference.py` to call an OpenAI-compatible model directly | `.env`, `inference.py` |
 | `OPENAI_BASE_URL` | Optional | Base URL for the OpenAI-compatible client used by `inference.py` | `.env`, `inference.py` |
 | `IMAGE_NAME` | Optional | Docker image tag used by helper scripts | `scripts/setup_env.sh`, Docker-related workflows |
-| `PATTERN_TASK` | Optional | Task label used by some helper commands or experiments | `.env` only unless you need it in your own tooling |
-| `PATTERN_BENCHMARK` | Optional | Benchmark label used by helper commands or experiments | `.env` only unless you need it in your own tooling |
-| `MAX_STEPS` | Optional | Limits how many steps the baseline runner or experiments should take | `.env` and any custom runner logic |
 | `TEMPERATURE` | Optional | Controls how random the model output is | `inference.py` |
 | `MAX_TOKENS` | Optional | Controls output length from the model | `inference.py` |
-| `MAX_TOTAL_REWARD` | Optional | Used for custom scoring or reporting workflows | `.env` only unless you add custom scoring |
-| `SUCCESS_SCORE_THRESHOLD` | Optional | Used for custom pass/fail reporting workflows | `.env` only unless you add custom scoring |
 
 ## Minimal Recommended `.env`
 
@@ -44,13 +39,8 @@ MODEL_NAME=Qwen/Qwen2.5-72B-Instruct
 OPENAI_API_KEY=
 OPENAI_BASE_URL=
 IMAGE_NAME=forecast-audit-openenv:latest
-PATTERN_TASK=sequence_guess
-PATTERN_BENCHMARK=my_pattern_env
-MAX_STEPS=3
-TEMPERATURE=0.3
-MAX_TOKENS=50
-MAX_TOTAL_REWARD=3.5
-SUCCESS_SCORE_THRESHOLD=0.1
+TEMPERATURE=0.0
+MAX_TOKENS=220
 ```
 
 ## Notes

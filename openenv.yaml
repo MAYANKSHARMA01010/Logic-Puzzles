@@ -1,6 +1,6 @@
-name: pattern-puzzle-env
+name: forecast-audit-openenv
 version: "1.0.0"
-description: "Pattern sequence puzzle game where AI agents solve mathematical and alphabetical sequences with difficulty-based scoring"
+description: "Forecast and time-series quality auditing environment with deterministic grading and structured rewards."
 
 # Endpoints that judges will call
 endpoints:
@@ -13,29 +13,78 @@ action_type: "object"
 action_schema:
   type: "object"
   properties:
-    guess:
+    operation:
       type: "string"
-      description: "The next value in the sequence as a string (e.g., '10', 'I', '6.25')"
+      enum: ["impute", "flag_anomaly", "accept", "repair_and_finalize", "escalate"]
+      description: "Action type to apply to the current task"
+    target_index:
+      type: ["integer", "null"]
+      description: "Index of the value being repaired or reviewed"
+    predicted_value:
+      type: ["number", "null"]
+      description: "Imputed or repaired numeric value"
+    severity:
+      type: ["string", "null"]
+      enum: ["low", "medium", "high", null]
+      description: "Severity level for anomaly/escalation decisions"
+    violated_constraints:
+      type: "array"
+      items:
+        type: "string"
+      description: "Constraints cited as violated"
+    rationale:
+      type: "string"
+      description: "Short explanation for the selected action"
   required:
-    - guess
+    - operation
 
 # Observation space
 observation_type: "object"
 observation_schema:
   type: "object"
   properties:
-    sequence:
+    task_id:
       type: "string"
-      description: "The pattern string ending with ? (e.g., '2, 4, 6, 8, ?')"
-    feedback:
+      description: "Unique task identifier"
+    difficulty:
       type: "string"
-      description: "Pass/fail message from the environment"
-    attempts_left:
+      description: "Task difficulty: easy, medium, or hard"
+    domain:
+      type: "string"
+      description: "Business domain: operations, finance, or energy"
+    metric_name:
+      type: "string"
+      description: "Name of the monitored metric"
+    timestamps:
+      type: "array"
+      items:
+        type: "string"
+      description: "Time labels for each value"
+    values:
+      type: "array"
+      items:
+        type: ["number", "null"]
+      description: "Observed values including potential gaps or anomalies"
+    issue_type:
+      type: "string"
+      description: "missing_value, anomaly, or invalid_forecast"
+    constraints:
+      type: "array"
+      items:
+        type: "string"
+      description: "Operational/business constraints for the task"
+    analyst_note:
+      type: "string"
+      description: "Context and guidance for the decision"
+    step_count:
       type: "integer"
-      description: "Number of remaining attempts before episode ends"
-    task_difficulty:
+      description: "Current step count in the episode"
+    max_steps:
+      type: "integer"
+      description: "Maximum allowed steps for the episode"
+    history_summary:
       type: "string"
-      description: "Difficulty level: easy, medium, or hard"
+      description: "Historical trend context for the metric"
 
 # Reward bounds
 reward:
