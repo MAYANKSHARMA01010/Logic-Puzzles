@@ -26,6 +26,7 @@ jobs:
       - name: Prepare env file
         run: |
           cp .env.example .env
+          if ! grep -q '^HF_TOKEN=' .env; then echo 'HF_TOKEN=hf_xxxxx' >> .env; fi
 
       - name: Run validation
         run: |

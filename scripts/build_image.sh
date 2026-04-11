@@ -2,6 +2,6 @@
 set -euo pipefail
 
 # Build the environment image from project root.
-docker build -t my-pattern-env:latest .
+docker build -t forecast-audit-openenv:latest .
 
-echo "Docker image built: my-pattern-env:latest"
+echo "Docker image built: forecast-audit-openenv:latest"

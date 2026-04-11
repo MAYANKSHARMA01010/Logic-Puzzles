@@ -68,7 +68,7 @@ if ! command -v docker &>/dev/null; then
   exit 1
 fi
 
-if docker build -t pattern-puzzle-env:test "$REPO_DIR" > /dev/null 2>&1; then
+if docker build -t forecast-audit-openenv:test "$REPO_DIR" > /dev/null 2>&1; then
   pass "Docker build succeeded"
 else
   fail "Docker build failed"
@@ -89,6 +89,16 @@ if cd "$REPO_DIR" && openenv validate > /dev/null 2>&1; then
 else
   fail "openenv validate failed"
   hint "Run: openenv validate (in repo root) to see errors"
+  exit 1
+fi
+
+# Check 4b: Baseline script runs
+log "${BOLD}Check 4b: Baseline run${NC}"
+if python "$REPO_DIR/inference.py" > /dev/null 2>&1; then
+  pass "inference.py ran successfully"
+else
+  fail "inference.py failed"
+  hint "Run: python inference.py to inspect the error"
   exit 1
 fi
 
